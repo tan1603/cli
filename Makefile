@@ -104,10 +104,11 @@ link: uninstall
 
 prune: deps
 	node bin/npm-cli.js prune --production --no-save --no-audit
-	@[[ "$(shell git status -s)" != "" ]] && echo "ERR: found unpruned files" && exit 1 || echo "git status is clean"
+	node scripts/git-dirty.js
 
-publish: gitclean ls-ok link test smoke-tests docs prune
-	@git push origin :v$(shell node bin/npm-cli.js --no-timing -v) 2>&1 || true
+prepublish: gitclean ls-ok link test smoke-tests docs prune
+
+publish: prepublish
 	git push origin $(BRANCH) &&\
 	git push origin --tags &&\
 	node bin/npm-cli.js publish --tag=$(PUBLISHTAG)
