@@ -1,3 +1,4 @@
+qr21
 ---
 title: npm-bugs
 section: 1
